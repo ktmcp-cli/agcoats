@@ -1,3 +1,5 @@
+![Banner](https://raw.githubusercontent.com/ktmcp-cli/agcoats/main/banner.svg)
+
 > "Six months ago, everyone was talking about MCPs. And I was like, screw MCPs. Every MCP would be better as a CLI."
 >
 > — [Peter Steinberger](https://twitter.com/steipete), Founder of OpenClaw
@@ -5,7 +7,18 @@
 
 # AGCO ATS CLI
 
-Production-ready CLI for the AGCO Agricultural Technology Services API. Manage farm equipment, fields, and sensor telemetry from your terminal.
+> **⚠️ Unofficial CLI** - Not officially sponsored or affiliated with AGCO.
+
+A production-ready command-line interface for [AGCO ATS](https://www.agco-ats.com/) — aftermarket technical services API for agriculture equipment. Access engine data, certificates, and technical information from your terminal.
+
+## Features
+
+- **Engine Data** — Get IQA codes and production data for engines
+- **Certificates** — List available certificates
+- **Brands** — Get list of supported brands
+- **User Management** — Check current user information
+- **JSON output** — All commands support `--json` for scripting
+- **Colorized output** — Clean terminal output with chalk
 
 ## Installation
 
@@ -13,148 +26,73 @@ Production-ready CLI for the AGCO Agricultural Technology Services API. Manage f
 npm install -g @ktmcp-cli/agcoats
 ```
 
-## Configuration
+## Quick Start
 
 ```bash
-agcoats config set --api-key YOUR_API_KEY
+# Authenticate and save token
+agcoats auth <username> <password>
+
+# Check connectivity
+agcoats hello
+
+# Get engine IQA codes
+agcoats engine iqa <serial-number>
+
+# Get engine production data
+agcoats engine production <serial-number>
+
+# List brands
+agcoats brands
 ```
 
-## Usage
+## Commands
 
 ### Config
 
 ```bash
-# Set API key
-agcoats config set --api-key <key>
-
-# Or set bearer token
 agcoats config set --token <token>
-
-# Get a config value
-agcoats config get apiKey
-
-# List all config
-agcoats config list
+agcoats config show
 ```
 
-### Equipment
+### Authentication
 
 ```bash
-# List all equipment
-agcoats equipment list
-
-# Filter by type
-agcoats equipment list --type tractor
-agcoats equipment list --type harvester
-agcoats equipment list --type planter
-
-# Filter by status
-agcoats equipment list --status active
-agcoats equipment list --status maintenance
-
-# Get equipment details
-agcoats equipment get <equipment-id>
-
-# Register new equipment
-agcoats equipment register \
-  --serial-number "JD123456789" \
-  --model "John Deere 8R 410" \
-  --type tractor \
-  --manufacturer-date 2023-01-15
-
-# Update equipment
-agcoats equipment update <equipment-id> --status maintenance
-agcoats equipment update <equipment-id> --owner-id new-owner-id
-
-# JSON output
-agcoats equipment list --json
+agcoats auth <username> <password>    # Authenticate and save token
+agcoats hello                         # Check connectivity
 ```
 
-### Fields
+### Engine Data
 
 ```bash
-# List all fields
-agcoats fields list
-agcoats fields list --farm-id <farm-id>
-
-# Get field details
-agcoats fields get <field-id>
-
-# Create a new field
-agcoats fields create \
-  --name "North Quarter Section" \
-  --area 64.75 \
-  --area-unit hectares \
-  --crop-type corn \
-  --farm-id <farm-id>
-
-# Update field
-agcoats fields update <field-id> --crop-type wheat
-agcoats fields update <field-id> --name "South Field"
-
-# JSON output
-agcoats fields list --json
+agcoats engine iqa <serial>           # Get IQA codes
+agcoats engine production <serial>    # Get production data
 ```
 
-### Sensors
+### Other Resources
 
 ```bash
-# List all sensors
-agcoats sensors list
-
-# Filter sensors
-agcoats sensors list --equipment-id <id>
-agcoats sensors list --field-id <id>
-agcoats sensors list --type temperature
-agcoats sensors list --type soil-moisture
-
-# Get sensor details
-agcoats sensors get <sensor-id>
-
-# Get historical readings
-agcoats sensors readings <sensor-id>
-agcoats sensors readings <sensor-id> --start-date 2024-01-01 --end-date 2024-01-31
-agcoats sensors readings <sensor-id> --limit 500
-
-# Get the latest reading
-agcoats sensors latest <sensor-id>
-
-# JSON output
-agcoats sensors latest <sensor-id> --json
+agcoats certificates                  # List certificates
+agcoats brands                        # List brands
+agcoats user                          # Get current user info
 ```
-
-## Equipment Types
-
-- `tractor` — Row crop and utility tractors
-- `harvester` — Combine harvesters
-- `planter` — Seeding equipment
-- `sprayer` — Crop protection application
-- `other` — Other agricultural equipment
-
-## Sensor Types
-
-- `temperature` — Air and engine temperature
-- `humidity` — Relative humidity
-- `soil-moisture` — Soil volumetric water content
-- `gps` — Location coordinates
-- `fuel` — Fuel level percentage
-- `engine` — Engine RPM and load
 
 ## JSON Output
 
-All commands support `--json` for machine-readable output:
+All commands support `--json` for structured output:
 
 ```bash
-# Get all equipment as JSON
-agcoats equipment list --json
-
-# Pipe to jq for filtering
-agcoats equipment list --json | jq '.[] | select(.status == "active") | {id, model, serialNumber}'
-
-# Check latest sensor readings across all sensors
-agcoats sensors list --json | jq '.[].id' | xargs -I{} agcoats sensors latest {} --json
+agcoats brands --json | jq '.[].Name'
+agcoats engine iqa <serial> --json | jq '.codes'
 ```
+
+## Why CLI > MCP?
+
+No server to run. No protocol overhead. Just install and go.
+
+- **Simpler** — Just a binary you call directly
+- **Composable** — Pipe to `jq`, `grep`, `awk`
+- **Scriptable** — Works in cron jobs, CI/CD, shell scripts
 
 ## License
 
-MIT
+MIT — Part of the [Kill The MCP](https://killthemcp.com) project.

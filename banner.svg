@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="200" viewBox="0 0 800 200">
+  <rect width="800" height="200" fill="#0a0e27"/>
+  <text x="50" y="110" font-family="monospace" font-size="48" font-weight="bold" fill="#00d9ff">
+    AGCO ATS CLI
+  </text>
+  <text x="50" y="150" font-family="monospace" font-size="20" fill="#7dd3fc">
+    Aftermarket technical services
+  </text>
+  <circle cx="720" cy="100" r="40" fill="none" stroke="#00d9ff" stroke-width="3"/>
+  <rect x="705" y="90" width="30" height="20" rx="3" fill="none" stroke="#00d9ff" stroke-width="2"/>
+  <circle cx="720" cy="75" r="5" fill="#00d9ff"/>
+  <line x1="720" y1="80" x2="720" y2="90" stroke="#00d9ff" stroke-width="2"/>
+</svg>

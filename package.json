@@ -1,27 +1,23 @@
 {
   "name": "@ktmcp-cli/agcoats",
   "version": "1.0.0",
-  "description": "Production-ready CLI for AGCO Agricultural Technology API - Kill The MCP",
+  "description": "Production-ready CLI for AGCO ATS - Aftermarket technical services API",
   "type": "module",
   "main": "src/index.js",
   "bin": {
     "agcoats": "bin/agcoats.js"
   },
-  "keywords": ["agcoats", "cli", "api", "ktmcp", "agco", "agriculture", "equipment"],
+  "keywords": ["agco", "agriculture", "technical", "aftermarket", "cli", "api", "ktmcp"],
   "author": "KTMCP",
   "license": "MIT",
   "dependencies": {
-    "commander": "^12.0.0",
-    "axios": "^1.6.7",
     "chalk": "^5.3.0",
-    "ora": "^8.0.1",
-    "conf": "^12.0.0"
+    "commander": "^11.1.0",
+    "ora": "^7.0.1"
   },
-  "engines": { "node": ">=18.0.0" },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ktmcp-cli/agcoats.git"
+    "url": "https://github.com/ktmcp-cli/agcoats"
   },
-  "homepage": "https://killthemcp.com/agcoats-cli",
-  "bugs": { "url": "https://github.com/ktmcp-cli/agcoats/issues" }
+  "homepage": "https://killthemcp.com/agcoats-cli"
 }

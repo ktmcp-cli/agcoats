@@ -1,19 +1,33 @@
-import Conf from 'conf';
+import { homedir } from 'os';
+import { join } from 'path';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 
-const config = new Conf({ projectName: '@ktmcp-cli/agcoats' });
+const CONFIG_DIR = join(homedir(), '.ktmcp');
+const CONFIG_FILE = join(CONFIG_DIR, 'agcoats.json');
 
-export function getConfig(key) {
-  return config.get(key);
+export function getConfig() {
+  if (!existsSync(CONFIG_FILE)) {
+    return { token: null, baseUrl: 'https://secure.agco-ats.com/api/v2' };
+  }
+  try {
+    const data = readFileSync(CONFIG_FILE, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    return { token: null, baseUrl: 'https://secure.agco-ats.com/api/v2' };
+  }
 }
 
-export function setConfig(key, value) {
-  config.set(key, value);
+export function setConfig(updates) {
+  if (!existsSync(CONFIG_DIR)) {
+    mkdirSync(CONFIG_DIR, { recursive: true });
+  }
+  const current = getConfig();
+  const newConfig = { ...current, ...updates };
+  writeFileSync(CONFIG_FILE, JSON.stringify(newConfig, null, 2));
+  return newConfig;
 }
 
 export function isConfigured() {
-  return !!(config.get('apiKey') || config.get('token'));
-}
-
-export function getAllConfig() {
-  return config.store;
+  const config = getConfig();
+  return !!config.token;
 }
